@@ -14,6 +14,7 @@
         <junit>4.12</junit>
         <assertJ>3.9.0</assertJ>
         <mockito>1.9.5</mockito>
+        <lombok>1.16.20</lombok>
     </properties>
 
     <build>
@@ -31,6 +32,15 @@
     </build>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok}</version>
+            <scope>provided</scope>
+        </dependency>
+
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
