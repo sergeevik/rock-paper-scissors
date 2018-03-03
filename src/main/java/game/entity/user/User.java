@@ -37,4 +37,8 @@ public class User implements Fight<User> {
             user.statistic.draw();
         }
     }
+
+    public String scoreToString() {
+        return statistic.toString();
+    }
 }

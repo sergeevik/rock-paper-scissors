@@ -4,15 +4,18 @@ public class CounterImpl implements Counter{
     private int wins;
     private int lose;
     private int draw;
+    private int score;
 
     @Override
     public void win(){
         wins++;
+        score++;
     }
 
     @Override
     public void lose(){
         lose++;
+        score--;
     }
 
     @Override
@@ -43,6 +46,14 @@ public class CounterImpl implements Counter{
 
     @Override
     public int getScore() {
-        return wins - lose;
+        return score;
+    }
+
+    @Override
+    public String toString() {
+        return "wins=" + wins +
+                ", lose=" + lose +
+                ", draw=" + draw +
+                ", score=" + score;
     }
 }
