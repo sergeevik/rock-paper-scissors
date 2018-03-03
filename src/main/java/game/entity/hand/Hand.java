@@ -34,9 +34,6 @@ public abstract class Hand implements Fight<Hand> {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        if (!super.equals(o)) {
-            return false;
-        }
         Hand hand = (Hand) o;
 
         return Objects.equals(getThis(), hand.getThis());
