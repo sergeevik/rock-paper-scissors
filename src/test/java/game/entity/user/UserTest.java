@@ -2,7 +2,6 @@ package game.entity.user;
 
 import game.entity.Result;
 import game.entity.hand.Hand;
-import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,8 +23,8 @@ public class UserTest {
 
     @Before
     public void setUp() throws Exception {
-        firstUser = new User();
-        secondUser = new User();
+        firstUser = new User("Boby");
+        secondUser = new User("Mike");
         firstUser.setHand(firstHand);
         secondUser.setHand(secondHand);
         when(firstHand.fight(secondHand)).thenReturn(Result.WIN);
