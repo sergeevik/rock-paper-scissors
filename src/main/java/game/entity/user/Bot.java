@@ -1,18 +1,28 @@
 package game.entity.user;
 
+import game.entity.hand.Hand;
 import game.entity.hand.Paper;
 import game.entity.hand.Rock;
 import game.entity.hand.Scissors;
 
 public class Bot extends User {
-    public void randomHand() {
+    public Bot() {
+        super("Bot");
+    }
+
+    public Hand randomHand() {
         long random = System.currentTimeMillis() % 3;
         if (random == 0) {
-            setHand(new Rock());
+            return new Rock();
         } else if (random == 1) {
-            setHand(new Paper());
+            return new Paper();
         } else {
-            setHand(new Scissors());
+            return new Scissors();
         }
+    }
+
+    @Override
+    public Hand getHand() {
+        return randomHand();
     }
 }
