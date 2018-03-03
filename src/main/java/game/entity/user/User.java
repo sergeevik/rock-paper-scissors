@@ -3,17 +3,25 @@ package game.entity.user;
 import game.entity.Fight;
 import game.entity.Result;
 import game.entity.hand.Hand;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Delegate;
 
 public class User implements Fight<User> {
-    @Setter
+    @Setter @Getter
     private Hand hand;
+
+    @Getter
+    private String name;
+
     @Delegate(types = CounterImpl.class, excludes = SetScore.class)
     private Counter statistic = new CounterImpl();
 
+    public User(String name) {
+        this.name = name;
+    }
+
     public Result fight(User anotherUser) {
-        Result fight = hand.fight(anotherUser.hand);
+        Result fight = this.getHand().fight(anotherUser.getHand());
         updateMyScore(fight);
         updateAnotherScore(fight, anotherUser);
         return fight;
