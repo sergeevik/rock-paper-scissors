@@ -19,21 +19,22 @@ public class User implements Fight<User> {
         return fight;
     }
 
-    private void updateAnotherScore(Result fight, User user) {
-        updateScore(fight, user);
+    private void updateAnotherScore(Result result, User user) {
+        Result anotherResult = result.revert();
+        updateScore(anotherResult, user);
     }
 
-    private void updateMyScore(Result fight) {
-        updateScore(fight, this);
+    private void updateMyScore(Result result) {
+        updateScore(result, this);
     }
 
     private void updateScore(Result result, User user) {
         if (result == Result.WIN) {
-            statistic.win();
+            user.statistic.win();
         } else if (result == Result.LOSE) {
-            statistic.lose();
+            user.statistic.lose();
         } else if (result == Result.DRAW) {
-            statistic.draw();
+            user.statistic.draw();
         }
     }
 }
