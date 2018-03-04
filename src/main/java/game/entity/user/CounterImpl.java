@@ -27,6 +27,8 @@ public class CounterImpl implements Counter{
     public void reset(){
         wins = 0;
         lose = 0;
+        draw = 0;
+        score = 0;
     }
 
     @Override
