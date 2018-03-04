@@ -1,6 +1,5 @@
 package game.entity.user;
 
-import game.entity.Result;
 import game.entity.hand.Hand;
 import game.entity.hand.HandForm;
 
@@ -19,8 +18,7 @@ public class Bot extends User {
     }
 
     @Override
-    public Result fight(User anotherUser) {
+    protected void updateAnotherHand() {
         setHand(randomHand());
-        return super.fight(anotherUser);
     }
 }

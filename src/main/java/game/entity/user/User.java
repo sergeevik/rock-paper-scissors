@@ -21,10 +21,16 @@ public class User implements Fight<User> {
     }
 
     public Result fight(User anotherUser) {
+        anotherUser.updateAnotherHand();
         Result fight = this.hand.fight(anotherUser.hand);
         updateMyScore(fight);
         updateAnotherScore(fight, anotherUser);
         return fight;
+    }
+
+    protected void updateAnotherHand() {
+        // TODO: придумать как пофиксить этот говнокод.
+        // Метод вызывается для генерации руки у бота, если выбран бот.
     }
 
     private void updateAnotherScore(Result result, User user) {
