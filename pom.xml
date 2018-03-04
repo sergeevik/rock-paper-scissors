@@ -7,6 +7,8 @@
     <groupId>com.herokuapp.game</groupId>
     <artifactId>rock-paper-scissors</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
     <properties>
         <java.version>1.8</java.version>
 
@@ -18,6 +20,8 @@
     </properties>
 
     <build>
+        <finalName>RPS</finalName>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -27,6 +31,31 @@
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>game.Starter</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <finalName>RPS_full</finalName>
+                    <appendAssemblyId>false</appendAssemblyId>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
