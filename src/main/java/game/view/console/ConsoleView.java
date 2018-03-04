@@ -1,10 +1,7 @@
 package game.view.console;
 
-import game.controller.GameController;
 import game.entity.Result;
 import game.entity.hand.HandForm;
-import game.entity.user.Bot;
-import game.entity.user.User;
 
 import java.util.Scanner;
 
@@ -12,38 +9,28 @@ import static game.view.console.Constants.*;
 
 public class ConsoleView {
     private final static Scanner reader = new Scanner(System.in);
-    private static GameController game;
-    private static User first;
-    private static User second;
+    private ConsoleController controller = new ConsoleController();
 
-    public static void main(String[] args) {
-        printHead();
-        initGame();
-        mainLoop();
-    }
-
-    private static void printHead() {
+    private void printHead() {
         printLine("===============================================================");
         printLine("==================== Rock Paper Scissors ======================");
         printLine("===============================================================");
     }
 
-    private static void initGame() {
-        first = initUser();
-
+    private void initGame() {
+        controller.initFirstPlayer(requireUserName());
         int opponent = choiceOpponent();
 
         if (opponent == BOT){
-            second = new Bot();
+            controller.playWithBot();
         }else if(opponent == USER){
-            second = initUser();
+            controller.playWithUser(requireUserName());
         }
 
-        game = new GameController(first, second);
-
+        controller.initGame();
     }
 
-    private static void mainLoop() {
+    private void mainLoop() {
         int chooseMenu = -1;
         while (chooseMenu != EXIT) {
             showMenu();
@@ -52,7 +39,7 @@ public class ConsoleView {
         }
     }
 
-    private static void showMenu() {
+    private void showMenu() {
         String menu = NEW_GAME + " - Новая игра\n" +
                 CONTINUE + " - Продолжить\n" +
                 PRINT_SCORE + " - Показать счет\n" +
@@ -60,9 +47,9 @@ public class ConsoleView {
         printLine(menu);
     }
 
-    private static void menuChoiceReact(int chooseMenu) {
+    private void menuChoiceReact(int chooseMenu) {
         if (chooseMenu == NEW_GAME){
-            game.restart();
+            controller.restart();
         }else if(chooseMenu == PRINT_SCORE){
             printScore();
         }else if (chooseMenu == EXIT){
@@ -74,64 +61,65 @@ public class ConsoleView {
         }
     }
 
-    private static void showHandChoice() {
+    private void showHandChoice() {
         String handForm = ROCK + " - Камень\n" +
                 PAPER + " - Ножницы\n" +
                 SCISSORS + " - Бумага";
         printLine(handForm);
     }
 
-    private static void reactChoiceHand(int handForm) {
+    private void reactChoiceHand(int handForm) {
         if (handForm == ROCK){
-            game.firstChoice(HandForm.ROCK);
+            controller.firstChoice(HandForm.ROCK);
         }else if (handForm == PAPER){
-            game.firstChoice(HandForm.PAPER);
+            controller.firstChoice(HandForm.PAPER);
         }else if (handForm == SCISSORS){
-            game.firstChoice(HandForm.SCISSORS);
+            controller.firstChoice(HandForm.SCISSORS);
         }
     }
 
-    private static void printScore() {
+    private void printScore() {
         printLine("=================== SCORE ===================");
-        printLine(playerScore(first));
-        printLine(playerScore(second));
+        printLine(controller.firstPlayerScore());
+        printLine(controller.secondPlayerScore());
         printLine("==============================================");
     }
 
-    private static void fight() {
+    private void fight() {
         showHandChoice();
         int handForm = readInt();
         reactChoiceHand(handForm);
-        Result fight = game.fight();
+        Result fight = controller.fight();
         printLine(fight.name());
     }
 
-    private static int choiceOpponent() {
+    private int choiceOpponent() {
         printLine("Play With:");
         printLine(BOT + " - bot");
         printLine(USER + " - another player");
         return readInt();
     }
 
-    private static User initUser() {
+    private String requireUserName() {
         printLine("Write player name:");
-        String name = readLine();
-        return new User(name);
+        return readLine();
     }
 
-    private static String playerScore(User user) {
-        return user.getName() + ": " + user.scoreToString();
-    }
-
-    private static String readLine(){
+    private String readLine(){
         return reader.nextLine();
     }
 
-    private static int readInt(){
+    private int readInt(){
         return reader.nextInt();
     }
 
-    private static void printLine(String line){
+    private void printLine(String line){
         System.out.println(line);
+    }
+
+    public void play() {
+        printHead();
+        initGame();
+        mainLoop();
     }
 }
