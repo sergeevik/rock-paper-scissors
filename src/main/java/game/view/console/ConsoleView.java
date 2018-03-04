@@ -24,7 +24,10 @@ public class ConsoleView {
         if (opponent == BOT){
             controller.playWithBot();
         }else if(opponent == USER){
-            controller.playWithUser(requireUserName());
+            printLine("Сорян. Пока доступна только игра с ботом");
+//            TODO: убрать когда доделаю
+//            controller.playWithUser(requireUserName());
+            controller.playWithBot();
         }
 
         controller.initGame();
@@ -40,7 +43,8 @@ public class ConsoleView {
     }
 
     private void showMenu() {
-        String menu = NEW_GAME + " - Новая игра\n" +
+        String menu = "Что делаем?:\n" +
+                RESTART + " - Рестарт игры\n" +
                 CONTINUE + " - Продолжить\n" +
                 PRINT_SCORE + " - Показать счет\n" +
                 EXIT + " - Выход";
@@ -48,21 +52,22 @@ public class ConsoleView {
     }
 
     private void menuChoiceReact(int chooseMenu) {
-        if (chooseMenu == NEW_GAME){
+        if (chooseMenu == RESTART){
             controller.restart();
         }else if(chooseMenu == PRINT_SCORE){
             printScore();
         }else if (chooseMenu == EXIT){
-            printLine("================ Thanks for game =====================");
+            printLine("================ Спасибо за игру =====================");
         }
 
-        if (chooseMenu == NEW_GAME || chooseMenu == CONTINUE){
+        if (chooseMenu == RESTART || chooseMenu == CONTINUE){
             fight();
         }
     }
 
     private void showHandChoice() {
-        String handForm = ROCK + " - Камень\n" +
+        String handForm = "Выбери свою фигуру:\n" +
+                ROCK + " - Камень\n" +
                 PAPER + " - Ножницы\n" +
                 SCISSORS + " - Бумага";
         printLine(handForm);
@@ -90,18 +95,27 @@ public class ConsoleView {
         int handForm = readInt();
         reactChoiceHand(handForm);
         Result fight = controller.fight();
-        printLine(fight.name());
+        printLine(fightResultToString(fight));
+    }
+
+    private String fightResultToString(Result result) {
+        if (result == Result.WIN)
+            return "================ Ты выиграл ================";
+        else if (result == Result.LOSE)
+            return "================ Ты проиграл ================";
+        else
+            return "=================== Ничья ===================";
     }
 
     private int choiceOpponent() {
-        printLine("Play With:");
-        printLine(BOT + " - bot");
-        printLine(USER + " - another player");
+        printLine("С кем будешь играть:");
+        printLine(BOT + " - бот");
+        printLine(USER + " - другой игрок");
         return readInt();
     }
 
     private String requireUserName() {
-        printLine("Write player name:");
+        printLine("Введи имя:");
         return readLine();
     }
 

@@ -1,7 +1,7 @@
 package game.view.console;
 
 public class Constants {
-    public static int NEW_GAME = 1;
+    public static int RESTART = 1;
     public static int CONTINUE = 2;
     public static int PRINT_SCORE = 3;
     public static int EXIT = 4;
