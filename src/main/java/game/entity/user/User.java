@@ -7,7 +7,7 @@ import lombok.*;
 import lombok.experimental.Delegate;
 
 public class User implements Fight<User> {
-    @Setter @Getter
+    @Setter
     private Hand hand;
 
     @Getter
@@ -21,7 +21,7 @@ public class User implements Fight<User> {
     }
 
     public Result fight(User anotherUser) {
-        Result fight = this.getHand().fight(anotherUser.getHand());
+        Result fight = this.hand.fight(anotherUser.hand);
         updateMyScore(fight);
         updateAnotherScore(fight, anotherUser);
         return fight;

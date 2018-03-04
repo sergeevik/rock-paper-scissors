@@ -1,5 +1,6 @@
 package game.entity.user;
 
+import game.entity.Result;
 import game.entity.hand.Hand;
 import game.entity.hand.Paper;
 import game.entity.hand.Rock;
@@ -10,7 +11,7 @@ public class Bot extends User {
         super("Bot");
     }
 
-    public Hand randomHand() {
+    private Hand randomHand() {
         long random = System.currentTimeMillis() % 3;
         if (random == 0) {
             return new Rock();
@@ -22,7 +23,8 @@ public class Bot extends User {
     }
 
     @Override
-    public Hand getHand() {
-        return randomHand();
+    public Result fight(User anotherUser) {
+        setHand(randomHand());
+        return super.fight(anotherUser);
     }
 }
