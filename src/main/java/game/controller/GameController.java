@@ -19,24 +19,14 @@ public class GameController {
     }
 
     public void firstChoice(HandForm form){
-        first.setHand(getHand(form));
+        first.setHand(form.getHand());
     }
 
     public void secondChoice(HandForm form){
-        second.setHand(getHand(form));
+        second.setHand(form.getHand());
     }
 
     public Result fight(){
         return first.fight(second);
-    }
-
-    private Hand getHand(HandForm form){
-        if (form == HandForm.ROCK){
-            return new Rock();
-        }else if (form == HandForm.PAPER){
-            return new Paper();
-        }else{
-            return new Scissors();
-        }
     }
 }

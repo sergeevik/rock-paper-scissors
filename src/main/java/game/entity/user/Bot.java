@@ -1,10 +1,7 @@
 package game.entity.user;
 
 import game.entity.Result;
-import game.entity.hand.Hand;
-import game.entity.hand.Paper;
-import game.entity.hand.Rock;
-import game.entity.hand.Scissors;
+import game.entity.hand.*;
 
 public class Bot extends User {
     public Bot() {
@@ -12,14 +9,8 @@ public class Bot extends User {
     }
 
     private Hand randomHand() {
-        long random = System.currentTimeMillis() % 3;
-        if (random == 0) {
-            return new Rock();
-        } else if (random == 1) {
-            return new Paper();
-        } else {
-            return new Scissors();
-        }
+        int random = (int)System.currentTimeMillis() % 3;
+        return HandForm.getHandById(random);
     }
 
     @Override
