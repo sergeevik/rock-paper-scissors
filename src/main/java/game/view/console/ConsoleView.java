@@ -3,6 +3,7 @@ package game.view.console;
 import game.entity.Result;
 import game.entity.hand.HandForm;
 
+import java.util.ResourceBundle;
 import java.util.Scanner;
 
 import static game.view.console.Constants.*;
@@ -10,10 +11,11 @@ import static game.view.console.Constants.*;
 public class ConsoleView {
     private final static Scanner reader = new Scanner(System.in);
     private ConsoleController controller = new ConsoleController();
+    private ResourceBundle msg = ResourceBundle.getBundle("headMessages");
 
     private void printHead() {
         printLine("===============================================================");
-        printLine("==================== Rock Paper Scissors ======================");
+        printLine("==================== "+msg.getString("gameName")+" ======================");
         printLine("===============================================================");
     }
 
@@ -24,7 +26,7 @@ public class ConsoleView {
         if (opponent == BOT){
             controller.playWithBot();
         }else if(opponent == USER){
-            printLine("Сорян. Пока доступна только игра с ботом");
+            printLine(msg.getString("notSupported"));
 //            TODO: убрать когда доделаю
 //            controller.playWithUser(requireUserName());
             controller.playWithBot();
@@ -43,11 +45,11 @@ public class ConsoleView {
     }
 
     private void showMenu() {
-        String menu = "Что делаем?:\n" +
-                RESTART + " - Рестарт игры\n" +
-                CONTINUE + " - Продолжить\n" +
-                PRINT_SCORE + " - Показать счет\n" +
-                EXIT + " - Выход";
+        String menu = msg.getString("menuChoice")+":\n" +
+                RESTART + " - "+ msg.getString("restart")+"\n" +
+                CONTINUE + " - "+ msg.getString("continue")+"\n" +
+                PRINT_SCORE + " - "+ msg.getString("printScore")+"\n" +
+                EXIT + " - " + msg.getString("exit");
         printLine(menu);
     }
 
@@ -57,7 +59,9 @@ public class ConsoleView {
         }else if(chooseMenu == PRINT_SCORE){
             printScore();
         }else if (chooseMenu == EXIT){
-            printLine("================ Спасибо за игру =====================");
+            printLine("================ " + msg.getString("thanksForGame") + " =====================");
+        }else {
+            printLine(msg.getString("notSupported"));
         }
 
         if (chooseMenu == RESTART || chooseMenu == CONTINUE){
@@ -66,10 +70,10 @@ public class ConsoleView {
     }
 
     private void showHandChoice() {
-        String handForm = "Выбери свою фигуру:\n" +
-                ROCK + " - Камень\n" +
-                PAPER + " - Ножницы\n" +
-                SCISSORS + " - Бумага";
+        String handForm = msg.getString("choiceHandForm") + ":\n" +
+                ROCK + " - "+ msg.getString("rock") +"\n" +
+                PAPER + " - "+ msg.getString("paper") +"\n" +
+                SCISSORS + " - "+ msg.getString("scissors");
         printLine(handForm);
     }
 
@@ -84,7 +88,7 @@ public class ConsoleView {
     }
 
     private void printScore() {
-        printLine("=================== SCORE ===================");
+        printLine("=================== "+msg.getString("score")+" ===================");
         printLine(controller.firstPlayerScore());
         printLine(controller.secondPlayerScore());
         printLine("==============================================");
@@ -100,22 +104,22 @@ public class ConsoleView {
 
     private String fightResultToString(Result result) {
         if (result == Result.WIN)
-            return "================ Ты выиграл ================";
+            return "================ "+ msg.getString("win") +" ================";
         else if (result == Result.LOSE)
-            return "================ Ты проиграл ================";
+            return "================ "+ msg.getString("lose") +" ================";
         else
-            return "=================== Ничья ===================";
+            return "=================== "+ msg.getString("draw") +" ===================";
     }
 
     private int choiceOpponent() {
-        printLine("С кем будешь играть:");
-        printLine(BOT + " - бот");
-        printLine(USER + " - другой игрок");
+        printLine(msg.getString("choiceOpponent") + ":");
+        printLine(BOT + " - "+ msg.getString("bot"));
+        printLine(USER + " - "+ msg.getString("anotherPlayer"));
         return readInt();
     }
 
     private String requireUserName() {
-        printLine("Введи имя:");
+        printLine(msg.getString("writeName")+":");
         return readLine();
     }
 
