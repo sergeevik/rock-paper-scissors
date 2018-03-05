@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="169.0"
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="278.0"
             prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="game.view.javafx.JavaFx">
-   <HBox layoutX="-4.0" layoutY="36.0" prefHeight="130.0" prefWidth="409.0" AnchorPane.leftAnchor="0.0"
-         AnchorPane.rightAnchor="0.0">
+   <HBox layoutY="76.0" prefHeight="130.0" prefWidth="409.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
       <ImageView id="paper" fx:id="paper" fitHeight="130.0" fitWidth="130.0" onMouseEntered="#colorize"
                  onMouseExited="#backToBlack" onMouseReleased="#choice" pickOnBounds="true" preserveRatio="true">
          <Image url="@image/paper.png"/>
@@ -22,11 +22,48 @@
          <Image url="@image/scissors.png"/>
       </ImageView>
    </HBox>
-   <Label fx:id="choiceHand" layoutY="3.0" prefHeight="31.0" prefWidth="400.0" text="Label" textAlignment="CENTER"
-          AnchorPane.bottomAnchor="135.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-          AnchorPane.topAnchor="3.0">
+   <Label fx:id="choiceHand" layoutY="38.0" prefHeight="33.0" prefWidth="400.0" text="Label" textAlignment="CENTER"
+          AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+          AnchorPane.topAnchor="38.0">
       <font>
          <Font size="20.0"/>
+      </font>
+   </Label>
+   <GridPane alignment="CENTER" layoutX="27.0" layoutY="215.0" prefHeight="64.0" prefWidth="372.0">
+      <columnConstraints>
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="134.0"/>
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="62.0"/>
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="355.0" minWidth="10.0" prefWidth="77.0"/>
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="355.0" minWidth="10.0" prefWidth="54.0"/>
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="355.0" minWidth="10.0" prefWidth="55.0"/>
+      </columnConstraints>
+      <rowConstraints>
+         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+      </rowConstraints>
+      <opaqueInsets>
+         <Insets bottom="1.0" right="1.0" top="1.0"/>
+      </opaqueInsets>
+      <Label fx:id="winsColumn" prefHeight="17.0" prefWidth="46.0" text="Label" GridPane.columnIndex="1"/>
+      <Label fx:id="winsFirst" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+      <Label fx:id="winsSecond" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+      <Label fx:id="nameColumn" prefHeight="17.0" prefWidth="39.0" text="Label"/>
+      <Label fx:id="nameFirst" text="Label" GridPane.rowIndex="1"/>
+      <Label fx:id="nameSecond" text="Label" GridPane.rowIndex="2"/>
+      <Label fx:id="loseColumn" prefHeight="17.0" prefWidth="80.0" text="Label" GridPane.columnIndex="2"/>
+      <Label fx:id="loseFirst" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+      <Label fx:id="loseSecond" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+      <Label fx:id="drawColumn" text="Label" GridPane.columnIndex="3"/>
+      <Label fx:id="drawFirst" text="Label" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+      <Label fx:id="drawSecond" text="Label" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
+      <Label fx:id="scoreColumn" text="Label" GridPane.columnIndex="4"/>
+      <Label fx:id="scoreFirst" text="Label" GridPane.columnIndex="4" GridPane.rowIndex="1"/>
+      <Label fx:id="scoreSecond" text="Label" GridPane.columnIndex="4" GridPane.rowIndex="2"/>
+   </GridPane>
+   <Label fx:id="resultLabel" layoutY="-4.0" prefHeight="42.0" prefWidth="400.0">
+      <font>
+         <Font size="25.0"/>
       </font>
    </Label>
 </AnchorPane>
