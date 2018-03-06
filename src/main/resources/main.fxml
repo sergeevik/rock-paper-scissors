@@ -75,5 +75,11 @@
          </font>
       </Label>
       <ProgressBar fx:id="resultBar" layoutY="-3.0" prefHeight="42.0" prefWidth="400.0" progress="0.0" visible="false" />
+      <Region fx:id="blockOnLoad" layoutY="2.0" onMouseClicked="#blockReact" prefHeight="284.0" prefWidth="400.0" visible="false" />
+      <Label fx:id="blockClick" layoutY="-3.0" prefHeight="40.0" prefWidth="400.0" text="Label" textAlignment="CENTER" visible="false">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

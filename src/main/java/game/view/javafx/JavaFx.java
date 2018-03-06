@@ -16,10 +16,11 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -48,9 +49,14 @@ public class JavaFx extends Application {
     @FXML private Label scoreFirst;
     @FXML private Label scoreSecond;
 
+    @FXML private Label blockClick;
+    @FXML private Region blockOnLoad;
+
     private ColorAdjust colorize = new ColorAdjust(0,0,0,0);
     private ColorAdjust gray = new ColorAdjust(0,-1,0,0);
     private ResourceBundle msg = ResourceBundle.getBundle("headMessages");
+    private Map<Integer, String> jokes= new HashMap<>();
+    private Random random = new Random();
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     private User firstUser = new User("Terry Pratchett");
@@ -71,6 +77,17 @@ public class JavaFx extends Application {
         game = new GameController(firstUser, secondUser);
         initResultColumns();
         resultBar.setProgress(-1.0);
+        initJokesMap();
+    }
+
+    private void initJokesMap() throws IOException {
+        Properties properties = new Properties();
+        properties.load(getClass().getClassLoader().getResourceAsStream("waitMessages.properties"));
+        for (Map.Entry<Object, Object> entry : properties.entrySet()) {
+            int number = Integer.parseInt(String.valueOf(entry.getKey()));
+            String joke = entry.getValue().toString();
+            jokes.put(number, joke);
+        }
     }
 
     private void initResultColumns() {
@@ -82,6 +99,7 @@ public class JavaFx extends Application {
         scoreColumn.setText(msg.getString("scoreColumn"));
         drawColumn.setText(msg.getString("drawColumn"));
         resultLabel.setAlignment(Pos.CENTER);
+        blockClick.setAlignment(Pos.CENTER);
         updateAllResults();
     }
 
@@ -123,6 +141,7 @@ public class JavaFx extends Application {
     }
 
     public void choice(MouseEvent mouseEvent) {
+        blockOnLoad.setVisible(true);
         ImageView source = (ImageView)mouseEvent.getSource();
         String id = source.getId().toUpperCase();
         game.firstChoice(HandForm.valueOf(id));
@@ -136,6 +155,8 @@ public class JavaFx extends Application {
             resultBar.setVisible(true);
             sleep(3000);
             resultBar.setVisible(false);
+            blockOnLoad.setVisible(false);
+            blockClick.setVisible(false);
         });
 
         if (result == Result.WIN){
@@ -155,5 +176,15 @@ public class JavaFx extends Application {
             Thread.sleep(time);
         } catch (InterruptedException ignore) {
         }
+    }
+
+    public void blockReact() {
+        blockClick.setVisible(true);
+        blockClick.setText(getRandomText());
+    }
+
+    private String getRandomText(){
+        int jokeNumber = random.nextInt(jokes.size()-1);
+        return jokes.get(jokeNumber);
     }
 }
