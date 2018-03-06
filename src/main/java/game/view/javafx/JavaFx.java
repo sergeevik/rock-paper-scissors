@@ -13,7 +13,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -27,7 +26,6 @@ import java.util.concurrent.Executors;
 public class JavaFx extends Application {
 
     @FXML private ProgressBar resultBar;
-    @FXML private ProgressIndicator pi;
     @FXML private Label resultLabel;
     @FXML private ImageView paper;
     @FXML private ImageView rock;
@@ -53,7 +51,7 @@ public class JavaFx extends Application {
     private ColorAdjust colorize = new ColorAdjust(0,0,0,0);
     private ColorAdjust gray = new ColorAdjust(0,-1,0,0);
     private ResourceBundle msg = ResourceBundle.getBundle("headMessages");
-    private ExecutorService executorService = Executors.newCachedThreadPool();
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     private User firstUser = new User("Terry Pratchett");
     private User secondUser = new Bot();
@@ -72,6 +70,7 @@ public class JavaFx extends Application {
         choiceHand.setAlignment(Pos.CENTER);
         game = new GameController(firstUser, secondUser);
         initResultColumns();
+        resultBar.setProgress(-1.0);
     }
 
     private void initResultColumns() {
@@ -133,6 +132,12 @@ public class JavaFx extends Application {
     }
 
     private void printResult(Result result) {
+        executorService.submit(() -> {
+            resultBar.setVisible(true);
+            sleep(3000);
+            resultBar.setVisible(false);
+        });
+
         if (result == Result.WIN){
             resultLabel.setText(msg.getString("win"));
             resultLabel.setStyle("-fx-background-color:#4dff4d;");
@@ -142,6 +147,13 @@ public class JavaFx extends Application {
         }else {
             resultLabel.setText(msg.getString("draw"));
             resultLabel.setStyle("-fx-background-color:#ffff4d;");
+        }
+    }
+
+    private void sleep(int time) {
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException ignore) {
         }
     }
 }
