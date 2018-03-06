@@ -6,6 +6,8 @@ import game.entity.hand.HandForm;
 import game.entity.user.Bot;
 import game.entity.user.User;
 import javafx.application.Application;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -21,50 +23,70 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class JavaFx extends Application {
 
-    @FXML private ProgressBar resultBar;
-    @FXML private Label resultLabel;
-    @FXML private ImageView paper;
-    @FXML private ImageView rock;
-    @FXML private ImageView scissors;
-    @FXML private Label choiceHand;
+    @FXML
+    private ProgressBar resultBar;
+    @FXML
+    private Label resultLabel;
+    @FXML
+    private ImageView paper;
+    @FXML
+    private ImageView rock;
+    @FXML
+    private ImageView scissors;
+    @FXML
+    private Label choiceHand;
 
-    @FXML private Label nameColumn;
-    @FXML private Label nameFirst;
-    @FXML private Label nameSecond;
-    @FXML private Label winsColumn;
-    @FXML private Label winsFirst;
-    @FXML private Label winsSecond;
-    @FXML private Label loseColumn;
-    @FXML private Label loseFirst;
-    @FXML private Label loseSecond;
-    @FXML private Label drawColumn;
-    @FXML private Label drawFirst;
-    @FXML private Label drawSecond;
-    @FXML private Label scoreColumn;
-    @FXML private Label scoreFirst;
-    @FXML private Label scoreSecond;
+    @FXML
+    private Label nameColumn;
+    @FXML
+    private Label nameFirst;
+    @FXML
+    private Label nameSecond;
+    @FXML
+    private Label winsColumn;
+    @FXML
+    private Label winsFirst;
+    @FXML
+    private Label winsSecond;
+    @FXML
+    private Label loseColumn;
+    @FXML
+    private Label loseFirst;
+    @FXML
+    private Label loseSecond;
+    @FXML
+    private Label drawColumn;
+    @FXML
+    private Label drawFirst;
+    @FXML
+    private Label drawSecond;
+    @FXML
+    private Label scoreColumn;
+    @FXML
+    private Label scoreFirst;
+    @FXML
+    private Label scoreSecond;
 
-    @FXML private Label blockClick;
-    @FXML private Region blockOnLoad;
+    @FXML
+    private Label blockClick;
+    @FXML
+    private Region blockOnLoad;
 
-    private ColorAdjust colorize = new ColorAdjust(0,0,0,0);
-    private ColorAdjust gray = new ColorAdjust(0,-1,0,0);
+    private ColorAdjust colorize = new ColorAdjust(0, 0, 0, 0);
+    private ColorAdjust gray = new ColorAdjust(0, -1, 0, 0);
     private ResourceBundle msg = ResourceBundle.getBundle("headMessages");
-    private Map<Integer, String> jokes= new HashMap<>();
+    private Map<Integer, String> jokes = new HashMap<>();
     private Random random = new Random();
-    private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     private User firstUser = new User("Terry Pratchett");
     private User secondUser = new Bot();
 
     private GameController game;
 
-    public void startFx(String... args){
+    public void startFx(String... args) {
         launch(args);
     }
 
@@ -100,10 +122,10 @@ public class JavaFx extends Application {
         drawColumn.setText(msg.getString("drawColumn"));
         resultLabel.setAlignment(Pos.CENTER);
         blockClick.setAlignment(Pos.CENTER);
-        updateAllResults();
+        updateResultTable();
     }
 
-    private void updateAllResults() {
+    private void updateResultTable() {
         updateFirstResults();
         updateSecondResults();
     }
@@ -126,39 +148,30 @@ public class JavaFx extends Application {
     public void start(Stage stage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("main.fxml"));
         stage.setScene(new Scene(root));
-        stage.setOnCloseRequest(a -> executorService.shutdownNow());
         stage.show();
     }
 
     public void backToBlack(MouseEvent mouseEvent) {
-        ImageView source = (ImageView)mouseEvent.getSource();
+        ImageView source = (ImageView) mouseEvent.getSource();
         source.setEffect(gray);
     }
 
     public void colorize(MouseEvent mouseEvent) {
-        ImageView source = (ImageView)mouseEvent.getSource();
+        ImageView source = (ImageView) mouseEvent.getSource();
         source.setEffect(colorize);
     }
 
     public void choice(MouseEvent mouseEvent) {
         blockOnLoad.setVisible(true);
-        ImageView source = (ImageView)mouseEvent.getSource();
+        ImageView source = (ImageView) mouseEvent.getSource();
         String id = source.getId().toUpperCase();
         game.firstChoice(HandForm.valueOf(id));
         Result fight = game.fight();
         printResult(fight);
-        updateAllResults();
     }
 
     private void printResult(Result result) {
-        executorService.submit(() -> {
-            resultBar.setVisible(true);
-            sleep(3000);
-            resultBar.setVisible(false);
-            blockOnLoad.setVisible(false);
-            blockClick.setVisible(false);
-        });
-
+        getServiceOfTask(updateResultThread()).start();
         if (result == Result.WIN){
             resultLabel.setText(msg.getString("win"));
             resultLabel.setStyle("-fx-background-color:#4dff4d;");
@@ -169,6 +182,34 @@ public class JavaFx extends Application {
             resultLabel.setText(msg.getString("draw"));
             resultLabel.setStyle("-fx-background-color:#ffff4d;");
         }
+    }
+
+    private Service<Void> getServiceOfTask(Task<Void> task) {
+        return new Service<Void>() {
+            @Override
+            protected Task<Void> createTask() {
+                return task;
+            }
+        };
+    }
+
+    private Task<Void> updateResultThread() {
+        return new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                resultBar.setVisible(true);
+                sleep(3000);
+                resultBar.setVisible(false);
+                blockOnLoad.setVisible(false);
+                blockClick.setVisible(false);
+                return null;
+            }
+
+            @Override
+            protected void succeeded() {
+                updateResultTable();
+            }
+        };
     }
 
     private void sleep(int time) {
